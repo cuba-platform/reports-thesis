@@ -14,7 +14,9 @@ import com.haulmont.cuba.gui.components.autocomplete.AutoCompleteSupport;
 import com.haulmont.cuba.gui.components.autocomplete.JpqlSuggestionFactory;
 import com.haulmont.cuba.gui.components.autocomplete.Suggester;
 import com.haulmont.cuba.gui.components.autocomplete.Suggestion;
-import com.haulmont.cuba.gui.data.*;
+import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.Datasource;
+import com.haulmont.cuba.gui.data.HierarchicalDatasource;
 import com.haulmont.cuba.gui.data.impl.CollectionDsListenerAdapter;
 import com.haulmont.cuba.gui.data.impl.DatasourceImplementation;
 import com.haulmont.cuba.gui.data.impl.DsListenerAdapter;
@@ -124,7 +126,19 @@ public class BandDefinitionEditor extends AbstractEditor<BandDefinition> impleme
         }
         int queryPosition = cursorPosition - 1;
 
-        return JpqlSuggestionFactory.requestHint(text, queryPosition, source, cursorPosition);
+        List<Suggestion> suggestions = JpqlSuggestionFactory.requestHint(text, queryPosition, source, cursorPosition);
+        addSpecificSuggestions(suggestions, source, text, cursorPosition);
+
+        return suggestions;
+    }
+
+    protected void addSpecificSuggestions(List<Suggestion> suggestions, AutoCompleteSupport source, String text, int cursorPosition) {
+        if (cursorPosition >= 2 && "${".equals(text.substring(cursorPosition - 2, cursorPosition))) {
+            for (ReportInputParameter inputParameter : reportDs.getItem().getInputParameters()) {
+                suggestions.add(new Suggestion(source, inputParameter.getAlias(), inputParameter.getAlias(),
+                        "", cursorPosition, cursorPosition));
+            }
+        }
     }
 
     @Override
