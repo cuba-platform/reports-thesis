@@ -31,9 +31,16 @@ public class ChartToJsonConverter {
         chart.put("chartScrollbar", Collections.emptyMap());
         exportConfig(chart);
 
+        if (Boolean.TRUE.equals(description.getShowLegend())) {
+            Map<String, Object> legend = new HashMap<>();
+            legend.put("useGraphSettings", true);
+            legend.put("markerSize", 10);
+            chart.put("legend", legend);
+        }
+
         HashMap<Object, Object> valueAxis = new HashMap<>();
-        valueAxis.put("gridColor", "#FFFFFF");
-        valueAxis.put("gridAlpha", 0.2);
+        valueAxis.put("gridColor", "#000");
+        valueAxis.put("gridAlpha", 0.1);
         valueAxis.put("dashLength", 0);
         valueAxis.put("title", description.getValueAxisCaption());
         valueAxis.put("unit", " " + description.getValueAxisUnits());
@@ -44,6 +51,8 @@ public class ChartToJsonConverter {
 
         HashMap<Object, Object> categoryAxis = new HashMap<>();
         categoryAxis.put("title", description.getCategoryAxisCaption());
+        categoryAxis.put("gridColor", "#000");
+        categoryAxis.put("gridAlpha", 0.1);
         chart.put("categoryAxis", categoryAxis);
 
         ArrayList<Object> graphs = new ArrayList<>();
@@ -62,7 +71,8 @@ public class ChartToJsonConverter {
                 graph.put("lineThickness", 2);
             }
 
-            graph.put("balloonText", series.getName());
+            graph.put("balloonText", series.getName()+" : [[value]]");
+            graph.put("title", series.getName());
 
             graphs.add(graph);
         }
