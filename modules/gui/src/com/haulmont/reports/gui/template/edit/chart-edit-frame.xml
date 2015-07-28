@@ -42,6 +42,7 @@
                 <field id="bandName" custom="true"/>
                 <field id="categoryField"/>
                 <field id="categoryAxisCaption"/>
+                <field id="categoryAxisLabelRotation"/>
                 <field id="valueAxisCaption"/>
                 <field id="valueAxisUnits"/>
                 <field id="valueStackType"/>

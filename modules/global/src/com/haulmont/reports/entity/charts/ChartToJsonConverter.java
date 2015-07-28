@@ -29,6 +29,7 @@ public class ChartToJsonConverter {
         chart.put("type", "serial");
         chart.put("categoryField", description.getCategoryField());
         chart.put("chartScrollbar", Collections.emptyMap());
+        chart.put("pathToImages", "VAADIN/resources/amcharts/images/");
         exportConfig(chart);
 
         if (Boolean.TRUE.equals(description.getShowLegend())) {
@@ -53,6 +54,7 @@ public class ChartToJsonConverter {
         categoryAxis.put("title", description.getCategoryAxisCaption());
         categoryAxis.put("gridColor", "#000");
         categoryAxis.put("gridAlpha", 0.1);
+        categoryAxis.put("labelRotation", description.getCategoryAxisLabelRotation());
         chart.put("categoryAxis", categoryAxis);
 
         ArrayList<Object> graphs = new ArrayList<>();
@@ -103,6 +105,7 @@ public class ChartToJsonConverter {
         chart.put("type", "pie");
         chart.put("titleField", description.getTitleField());
         chart.put("valueField", description.getValueField());
+        chart.put("pathToImages", "VAADIN/resources/amcharts/images/");
         exportConfig(chart);
 
         if (Boolean.TRUE.equals(description.getShowLegend())) {
