@@ -114,6 +114,10 @@ public class ShowChartController extends AbstractWindow {
                     }
                 }
             });
+            Component cancel = inputParametersController.getComponent("cancel");
+            if (cancel != null) {
+                cancel.setVisible(false);
+            }
         }
     }
 
