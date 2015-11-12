@@ -10,6 +10,7 @@ import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.View;
 import com.haulmont.cuba.gui.AppConfig;
+import com.haulmont.cuba.gui.DialogParams;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.DsBuilder;
@@ -61,7 +62,5 @@ public class CommonLookupController extends AbstractLookup {
         table.refresh();
 
         this.setLookupComponent(table);
-
-        getDialogParams().setHeight(350);
     }
 }
