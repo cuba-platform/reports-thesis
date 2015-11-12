@@ -82,6 +82,7 @@ public class ParameterEditor extends AbstractEditor {
         super.setItem(newItem);
         parameter = (ReportInputParameter) getItem();
         enableControlsByParamType(parameter.getType());
+        initScreensLookup();
     }
 
     @Override
@@ -123,6 +124,8 @@ public class ParameterEditor extends AbstractEditor {
 
                     parameter.setDefaultValue(null);
                     parameter.setScreen(null);
+
+                    initScreensLookup();
 
                     initDefaultValueField();
                 }
@@ -177,7 +180,6 @@ public class ParameterEditor extends AbstractEditor {
 
             if (parameter.getParameterClass() != null) {
                 field.setValue(reportService.convertFromString(parameter.getParameterClass(), parameter.getDefaultValue()));
-                initScreensLookup();
             }
             field.setRequired(false);
 
