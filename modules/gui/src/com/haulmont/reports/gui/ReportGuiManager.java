@@ -163,7 +163,7 @@ public class ReportGuiManager {
         printReport(report, params, null, null, window);
     }
 
-    public void printReport(Report report, Map<String, Object> params, @Nullable String templateCode, @Nullable String outputFileName,@Nullable IFrame window) {
+    public void printReport(Report report, Map<String, Object> params, @Nullable String templateCode, @Nullable String outputFileName, @Nullable IFrame window) {
 
         Configuration configuration = AppBeans.get(Configuration.NAME);
         ReportingClientConfig reportingClientConfig = configuration.getConfig(ReportingClientConfig.class);
@@ -195,7 +195,7 @@ public class ReportGuiManager {
     }
 
     protected void showReportResult(ReportOutputDocument document, Map<String, Object> params,
-                                    @Nullable String templateCode,  @Nullable String outputFileName, @Nullable IFrame window) {
+                                    @Nullable String templateCode, @Nullable String outputFileName, @Nullable IFrame window) {
         if (document.getReportOutputType().getId().equals(CubaReportOutputType.chart.getId())) {
             HashMap<String, Object> screenParams = new HashMap<>();
             screenParams.put(ShowChartController.CHART_JSON_PARAMETER, new String(document.getContent()));
@@ -251,9 +251,12 @@ public class ReportGuiManager {
     }
 
     public List<Report> getAvailableReports(@Nullable String screenId, @Nullable User user, @Nullable MetaClass inputValueMetaClass) {
-
         LoadContext lContext = new LoadContext(Report.class);
-        lContext.setView(new View(Report.class).addProperty("name").addProperty("localeNames").addProperty("xml"));
+        lContext.setView(new View(Report.class)
+                .addProperty("name")
+                .addProperty("localeNames")
+                .addProperty("xml")
+                .addProperty("group", metadata.getViewRepository().getView(ReportGroup.class, View.LOCAL)));
         if (inputValueMetaClass != null) {//select only reports having entity parameter
             lContext.setQueryString("select r from report$Report r where r.xml like :paramMask");
             lContext.getQuery().setParameter("paramMask", "%<entityMetaClass>%</entityMetaClass>%");
