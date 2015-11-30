@@ -256,6 +256,7 @@ public class ReportGuiManager {
                 .addProperty("name")
                 .addProperty("localeNames")
                 .addProperty("xml")
+                .addProperty("code")
                 .addProperty("group", metadata.getViewRepository().getView(ReportGroup.class, View.LOCAL)));
         if (inputValueMetaClass != null) {//select only reports having entity parameter
             lContext.setQueryString("select r from report$Report r where r.xml like :paramMask");
