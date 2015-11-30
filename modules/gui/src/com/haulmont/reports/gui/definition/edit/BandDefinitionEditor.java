@@ -256,6 +256,13 @@ public class BandDefinitionEditor extends AbstractEditor<BandDefinition> impleme
                 updateRequiredIndicators(item);
                 selectFirstDataSet();
             }
+
+            @Override
+            public void valueChanged(BandDefinition source, String property, @Nullable Object prevValue, @Nullable Object value) {
+                if ("name".equals(property) && StringUtils.isBlank((String) value)) {
+                    source.setName("*");
+                }
+            }
         });
     }
 
