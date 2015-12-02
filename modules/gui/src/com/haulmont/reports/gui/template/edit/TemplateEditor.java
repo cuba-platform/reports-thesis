@@ -5,8 +5,6 @@
 
 package com.haulmont.reports.gui.template.edit;
 
-import com.haulmont.cuba.core.entity.Entity;
-import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.AppConfig;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.config.WindowConfig;
@@ -41,27 +39,28 @@ import java.util.Map;
  */
 public class TemplateEditor extends AbstractEditor<ReportTemplate> {
     @Inject
-    private Label templateFileLabel;
+    protected Label templateFileLabel;
+
     @Inject
-    protected Button templatePath;
+    protected LinkButton templatePath;
+
     @Inject
     protected FileUploadField uploadTemplate;
 
     @Inject
     protected TextField customDefinition;
+
     @Inject
-    private Label customDefinitionLabel;
+    protected Label customDefinitionLabel;
 
     @Inject
     protected LookupField customDefinedBy;
+
     @Inject
-    private Label customDefinedByLabel;
+    protected Label customDefinedByLabel;
 
     @Inject
     protected CheckBox custom;
-
-    @Inject
-    protected Messages messages;
 
     @Inject
     protected FileUploadingAPI fileUploading;
@@ -70,31 +69,32 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
     protected LookupField outputType;
 
     @Inject
-    private TextField outputNamePattern;
-    @Inject
-    private Label outputNamePatternLabel;
+    protected TextField outputNamePattern;
 
     @Inject
-    private ChartEditFrameController chartEdit;
+    protected Label outputNamePatternLabel;
 
     @Inject
-    private NotPersistenceDatasource templateDs;
-
-    public TemplateEditor() {
-        showSaveNotification = false;
-    }
+    protected ChartEditFrameController chartEdit;
 
     @Inject
-    private BoxLayout chartEditBox;
+    protected NotPersistenceDatasource<ReportTemplate> templateDs;
 
     @Inject
-    private BoxLayout chartPreviewBox;
+    protected BoxLayout chartEditBox;
+
+    @Inject
+    protected BoxLayout chartPreviewBox;
 
     @Inject
     protected ThemeConstants themeConstants;
 
     @Inject
     protected WindowConfig windowConfig;
+
+    public TemplateEditor() {
+        showSaveNotification = false;
+    }
 
     @Override
     protected void initNewItem(ReportTemplate template) {
@@ -115,9 +115,10 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
 
         final ReportTemplate reportTemplate = getItem();
         templatePath.setCaption(reportTemplate.getName());
-        templateDs.addListener(new DsListenerAdapter() {
+        templateDs.addListener(new DsListenerAdapter<ReportTemplate>() {
             @Override
-            public void valueChanged(Entity source, String property, @Nullable Object prevValue, @Nullable Object value) {
+            public void valueChanged(ReportTemplate source, String property,
+                                     @Nullable Object prevValue, @Nullable Object value) {
                 if ("reportOutputType".equals(property)) {
                     setupVisibility(reportTemplate.getCustom(), (ReportOutputType) value);
                 } else if ("custom".equals(property)) {
@@ -143,7 +144,8 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
     @Override
     public void ready() {
         super.ready();
-        final ReportTemplate reportTemplate = getItem();
+
+        ReportTemplate reportTemplate = getItem();
         setupVisibility(reportTemplate.getCustom(), reportTemplate.getReportOutputType());
     }
 
@@ -155,11 +157,9 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
         customDefinitionLabel.setVisible(customEnabled);
 
         customDefinedBy.setRequired(customEnabled);
-        customDefinedBy.setRequiredMessage(messages.getMessage(TemplateEditor.class,
-                "templateEditor.customDefinedBy"));
+        customDefinedBy.setRequiredMessage(getMessage("templateEditor.customDefinedBy"));
         customDefinition.setRequired(customEnabled);
-        customDefinition.setRequiredMessage(messages.getMessage(TemplateEditor.class,
-                "templateEditor.classRequired"));
+        customDefinition.setRequiredMessage(getMessage("templateEditor.classRequired"));
 
         boolean chartOutputType = reportOutputType == ReportOutputType.CHART;
         chartEditBox.setVisible(chartOutputType && !customEnabled);
@@ -169,7 +169,6 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
         } else {
             chartEdit.hideChartPreviewBox();
         }
-
 
         uploadTemplate.setVisible(!chartOutputType);
         templatePath.setVisible(!chartOutputType);
@@ -188,17 +187,6 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
         getDialogParams().setWidth(themeConstants.getInt("cuba.gui.report.TemplateEditor.width")).setResizable(true);
 
         FileUploadField.Listener uploadListener = new FileUploadField.ListenerAdapter() {
-
-            @Override
-            public void uploadStarted(Event event) {
-                uploadTemplate.setEnabled(false);
-            }
-
-            @Override
-            public void uploadFinished(Event event) {
-                uploadTemplate.setEnabled(true);
-            }
-
             @Override
             public void uploadSucceeded(Event event) {
                 getItem().setName(uploadTemplate.getFileName());
@@ -256,8 +244,10 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
                 && reportTemplate.getReportOutputType() != ReportOutputType.CHART
                 && name != null) {
             String inputType = name.contains(".") ? name.substring(name.lastIndexOf(".") + 1) : "";
+
+            ReportOutputType outputTypeValue = outputType.getValue();
             if (!ReportPrintHelper.getInputOutputTypesMapping().containsKey(inputType) ||
-                    !ReportPrintHelper.getInputOutputTypesMapping().get(inputType).contains(outputType.getValue())) {
+                    !ReportPrintHelper.getInputOutputTypesMapping().get(inputType).contains(outputTypeValue)) {
                 showNotification(getMessage("inputOutputTypesError"), NotificationType.TRAY);
                 return false;
             }
@@ -290,13 +280,15 @@ public class TemplateEditor extends AbstractEditor<ReportTemplate> {
 
     @Override
     public void commitAndClose() {
-        if (!validateTemplateFile())
+        if (!validateTemplateFile()) {
             return;
+        }
 
         if (!getItem().getCustom()) {
             getItem().setCustomDefinition("");
         }
-        if (commit(true))
+        if (commit(true)) {
             close(COMMIT_ACTION_ID);
+        }
     }
 }
