@@ -188,6 +188,11 @@ public class ReportBrowser extends AbstractLookup {
                 public String getCaption() {
                     return getMessage("report.new");
                 }
+
+                @Override
+                protected void afterCommit(Entity entity) {
+                    reportsTable.expandPath(entity);
+                }
             });
             popupCreateBtn.addAction(new AbstractAction("wizard") {
                 AbstractEditor<ReportData> editor;
@@ -217,6 +222,8 @@ public class ReportBrowser extends AbstractLookup {
                                                     reportDs.updateItem(item);
                                                 }
                                             }
+                                            UUID newReportId = reportEditor.getItem().getId();
+                                            reportsTable.expandPath(reportDs.getItem(newReportId));
                                             reportsTable.requestFocus();
                                         }
                                     });
