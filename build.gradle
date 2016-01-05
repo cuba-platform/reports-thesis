@@ -8,7 +8,7 @@ allprojects {
     ext.artifactGroup = 'com.haulmont.reports'
     ext.artifactVersion = cubaVersion.replace('-SNAPSHOT', '')
     ext.isSnapshot = cubaVersion.endsWith('-SNAPSHOT')
-    ext.vcs = 'svn'
+    ext.vcs = 'Git'
 
     configurations.all {
         resolutionStrategy.cacheDynamicVersionsFor 1, 'minutes'
