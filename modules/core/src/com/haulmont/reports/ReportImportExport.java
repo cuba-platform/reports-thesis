@@ -277,12 +277,14 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
             report = em.merge(report);
 
             List<ReportTemplate> reportTemplates = new ArrayList<>();
-            for (ReportTemplate reportTemplate : loadedTemplates) {
-                reportTemplate.setReport(report);
-                ReportTemplate merged = em.merge(reportTemplate);
-                reportTemplates.add(merged);
-                if (merged.equals(defaultTemplate)) {
-                    report.setDefaultTemplate(merged);
+            if (loadedTemplates != null) {
+                for (ReportTemplate reportTemplate : loadedTemplates) {
+                    reportTemplate.setReport(report);
+                    ReportTemplate merged = em.merge(reportTemplate);
+                    reportTemplates.add(merged);
+                    if (merged.equals(defaultTemplate)) {
+                        report.setDefaultTemplate(merged);
+                    }
                 }
             }
             report.setTemplates(reportTemplates);
