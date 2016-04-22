@@ -174,6 +174,8 @@ public class ParameterEditor extends AbstractEditor {
                 public void valueChanged(Object source, String property, @Nullable Object prevValue, @Nullable Object value) {
                     if (value != null) {
                         parameter.setDefaultValue(reportService.convertToString(value.getClass(), value));
+                    } else {
+                        parameter.setDefaultValue(null);
                     }
                 }
             });
