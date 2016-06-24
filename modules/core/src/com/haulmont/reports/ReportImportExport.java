@@ -78,6 +78,11 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
     }
 
     public Collection<Report> importReports(byte[] zipBytes) {
+        return importReports(zipBytes, null);
+    }
+
+    @Override
+    public Collection<Report> importReports(byte[] zipBytes, EnumSet<ReportImportOption> importOptions) {
         LinkedList<Report> reports = null;
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(zipBytes);
         ZipArchiveInputStream archiveReader = new ZipArchiveInputStream(byteArrayInputStream);
@@ -88,7 +93,7 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
                         reports = new LinkedList<>();
                     }
                     final byte[] buffer = readBytesFromEntry(archiveReader);
-                    Report report = importReport(buffer);
+                    Report report = importReport(buffer, importOptions);
                     reports.add(report);
                 }
             } catch (IOException e) {
@@ -194,7 +199,7 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
     }
 
 
-    protected Report importReport(byte[] zipBytes) throws IOException {
+    protected Report importReport(byte[] zipBytes, EnumSet<ReportImportOption> importOptions) throws IOException {
         Report report = null;
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(zipBytes);
         ZipArchiveInputStream archiveReader;
@@ -255,6 +260,16 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
             }
         }
         byteArrayInputStream.close();
+
+        if (importOptions != null) {
+            for (ReportImportOption option : importOptions) {
+                if (ReportImportOption.DO_NOT_IMPORT_ROLES == option) {
+                    Report dbReport = reloadReport(report);
+                    report.setRoles(dbReport.getRoles());
+                    report.setXml(reportingApi.convertToXml(report));
+                }
+            }
+        }
 
         report = saveReport(report);
         return report;

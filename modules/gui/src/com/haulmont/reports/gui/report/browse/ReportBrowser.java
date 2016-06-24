@@ -10,7 +10,6 @@ import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.AppConfig;
 import com.haulmont.cuba.gui.WindowManager;
-import com.haulmont.cuba.gui.app.core.file.FileUploadDialog;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.components.actions.CreateAction;
@@ -26,7 +25,6 @@ import com.haulmont.reports.app.service.ReportService;
 import com.haulmont.reports.entity.Report;
 import com.haulmont.reports.entity.wizard.ReportData;
 import com.haulmont.reports.gui.ReportGuiManager;
-import org.apache.commons.io.FileUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -118,35 +116,16 @@ public class ReportBrowser extends AbstractLookup {
         importReport.setAction(new BaseAction("import") {
             @Override
             public void actionPerform(Component component) {
-                final FileUploadDialog dialog = openWindow("fileUploadDialog", WindowManager.OpenType.DIALOG);
-                dialog.addListener(new CloseListener() {
-                    @Override
-                    public void windowClosed(String actionId) {
-                        if (Window.COMMIT_ACTION_ID.equals(actionId)) {
-                            String fileName = dialog.getFileName();
-                            int extensionIndex = fileName.lastIndexOf('.');
-                            String fileExtension = fileName.substring(extensionIndex + 1).toUpperCase();
-
-                            if (!fileExtension.equals("ZIP")) {
-                                String msg = messages.formatMessage(getClass(), "reportException.wrongFileType", fileExtension);
-                                showNotification(msg, NotificationType.ERROR);
-
-                            } else {
-                                try {
-                                    byte[] report = FileUtils.readFileToByteArray(fileUpload.getFile(dialog.getFileId()));
-                                    fileUpload.deleteFile(dialog.getFileId());
-                                    reportService.importReports(report);
-                                } catch (Exception e) {
-                                    String msg = getMessage("reportException.unableToImportReport");
-                                    showNotification(msg, e.toString(), NotificationType.ERROR);
+                openWindow("report$Report.importDialog", WindowManager.OpenType.DIALOG)
+                        .addListener(new CloseListener() {
+                            @Override
+                            public void windowClosed(String actionId) {
+                                if (COMMIT_ACTION_ID.equals(actionId)) {
+                                    reportsTable.getDatasource().refresh();
                                 }
-                                reportsTable.getDatasource().refresh();
+                                reportsTable.requestFocus();
                             }
-                        }
-
-                        reportsTable.requestFocus();
-                    }
-                });
+                        });
             }
 
             @Override

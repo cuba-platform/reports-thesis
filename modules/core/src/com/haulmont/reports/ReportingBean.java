@@ -401,6 +401,11 @@ public class ReportingBean implements ReportingApi {
     }
 
     @Override
+    public Collection<Report> importReports(byte[] zipBytes, EnumSet<ReportImportOption> importOptions) {
+        return reportImportExport.importReports(zipBytes, importOptions);
+    }
+
+    @Override
     public String convertToXml(Report report) {
         XStream xStream = createXStream();
         //noinspection UnnecessaryLocalVariable
