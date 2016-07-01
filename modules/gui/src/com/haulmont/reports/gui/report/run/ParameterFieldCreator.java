@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableMap;
 import com.haulmont.chile.core.datatypes.Datatypes;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.AppConfig;
-import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.validators.DoubleValidator;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
@@ -164,7 +163,6 @@ public class ParameterFieldCreator {
             pickerField.setMetaClass(entityMetaClass);
 
             PickerField.LookupAction pickerLookupAction = pickerField.addLookupAction();
-            pickerLookupAction.setLookupScreenOpenType(WindowManager.OpenType.DIALOG);
             pickerField.addAction(pickerLookupAction);
             pickerField.addClearAction();
 
@@ -207,7 +205,6 @@ public class ParameterFieldCreator {
             tokenList.setDatasource(cds);
             tokenList.setEditable(true);
             tokenList.setLookup(true);
-            tokenList.setLookupOpenMode(WindowManager.OpenType.DIALOG);
             tokenList.setHeight("120px");
 
             String screen = parameter.getScreen();
@@ -225,18 +222,6 @@ public class ParameterFieldCreator {
             tokenList.setAddButtonCaption(messages.getMessage(TokenList.class, "actions.Select"));
             tokenList.setInline(true);
             tokenList.setSimple(true);
-
-//            if (Boolean.TRUE.equals(parameter.getRequired())) {
-//                tokenList.addValidator(new Field.Validator() {
-//                    @Override
-//                    public void validate(Object value) throws ValidationException {
-//                        if (value instanceof Collection && CollectionUtils.isEmpty((Collection) value)) {
-//                            throw new ValidationException(
-//                                    messages.formatMessage(this.getClass(), "error.paramIsRequiredButEmpty", parameter.getLocName()));
-//                        }
-//                    }
-//                });
-//            }
 
             return tokenList;
         }
