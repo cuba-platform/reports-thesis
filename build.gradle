@@ -56,7 +56,7 @@ def desktopModule = project(':reports-desktop')
 
 apply from: "$rootProject.projectDir/lib.gradle"
 
-def servletApi = [group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '7.0.53']
+def servletApi = [group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '7.0.70']
 def postgres = [group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4']
 
 def groovyArtifact = [group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.1.6']
