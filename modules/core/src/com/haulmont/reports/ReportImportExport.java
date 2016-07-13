@@ -265,8 +265,10 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
             for (ReportImportOption option : importOptions) {
                 if (ReportImportOption.DO_NOT_IMPORT_ROLES == option) {
                     Report dbReport = reloadReport(report);
-                    report.setRoles(dbReport.getRoles());
-                    report.setXml(reportingApi.convertToXml(report));
+                    if (dbReport != null) {
+                        report.setRoles(dbReport.getRoles());
+                        report.setXml(reportingApi.convertToXml(report));
+                    }
                 }
             }
         }
