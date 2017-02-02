@@ -375,7 +375,9 @@ public class ReportImportExport implements ReportImportExportAPI, ReportImportEx
             EntityManager em = persistence.getEntityManager();
             View exportView = viewRepository.getView(report.getClass(), ReportingBean.REPORT_EDIT_VIEW_NAME);
             report = em.find(Report.class, report.getId(), exportView);
-            em.fetch(report, exportView);
+            if (report != null) {
+                em.fetch(report, exportView);
+            }
             tx.commit();
             return report;
         } finally {
