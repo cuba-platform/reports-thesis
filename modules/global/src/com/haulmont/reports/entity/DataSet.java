@@ -137,6 +137,11 @@ public class DataSet extends AbstractNotPersistentEntity implements ReportQuery 
     }
 
     @Override
+    public Boolean getProcessTemplate() {
+        return false;
+    }
+
+    @Override
     public Map<String, Object> getAdditionalParams() {
         Map<String, Object> params = new HashMap<>();
         params.put(ENTITY_PARAM_NAME, entityParamName);
