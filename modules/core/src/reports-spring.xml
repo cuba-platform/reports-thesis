@@ -47,11 +47,17 @@
         <property name="timeoutInSeconds">
             <value>${cuba.reporting.openoffice.docFormatterTimeout?:20}</value>
         </property>
+        <property name="connectionTimeoutSec">
+            <value>${cuba.reporting.openoffice.connectionTimeoutSec?:10}</value>
+        </property>
         <property name="temporaryDirPath">
             <value>${cuba.tempDir}/reporting/</value>
         </property>
         <property name="countOfRetry">
-            <value>${cuba.reporting.openoffice.countOfRetry?:3}</value>
+            <value>${cuba.reporting.openoffice.countOfRetry?:5}</value>
+        </property>
+        <property name="retryIntervalMs">
+            <value>${cuba.reporting.openoffice.retryIntervalMs?:2000}</value>
         </property>
     </bean>
 

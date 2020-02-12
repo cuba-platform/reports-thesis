@@ -45,6 +45,18 @@ public interface ReportingConfig extends Config {
     @DefaultInteger(20)
     Integer getDocFormatterTimeout();
 
+    @Property("cuba.reporting.openoffice.connectionTimeoutSec")
+    @DefaultInteger(10)
+    Integer getConnectionTimeoutSec();
+
+    @Property("cuba.reporting.openoffice.countOfRetry")
+    @DefaultInteger(5)
+    Integer getCountOfRetry();
+
+    @Property("cuba.reporting.openoffice.retryIntervalMs")
+    @DefaultInteger(2000)
+    Integer getRetryIntervalMs();
+
     /**
      * @return Has to be true if using OpenOffice reporting formatter on a *nix server without X server running
      */
