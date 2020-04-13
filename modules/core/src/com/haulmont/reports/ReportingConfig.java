@@ -42,11 +42,11 @@ public interface ReportingConfig extends Config {
      * @return Request to OpenOffice timeout in seconds.
      */
     @Property("cuba.reporting.openoffice.docFormatterTimeout")
-    @DefaultInteger(20)
+    @DefaultInteger(30)
     Integer getDocFormatterTimeout();
 
     @Property("cuba.reporting.openoffice.connectionTimeoutSec")
-    @DefaultInteger(10)
+    @DefaultInteger(15)
     Integer getConnectionTimeoutSec();
 
     @Property("cuba.reporting.openoffice.countOfRetry")
