@@ -45,10 +45,10 @@
             <value>${cuba.reporting.displayDeviceAvailable?:false}</value>
         </property>
         <property name="timeoutInSeconds">
-            <value>${cuba.reporting.openoffice.docFormatterTimeout?:20}</value>
+            <value>${cuba.reporting.openoffice.docFormatterTimeout?:30}</value>
         </property>
         <property name="connectionTimeoutSec">
-            <value>${cuba.reporting.openoffice.connectionTimeoutSec?:10}</value>
+            <value>${cuba.reporting.openoffice.connectionTimeoutSec?:15}</value>
         </property>
         <property name="temporaryDirPath">
             <value>${cuba.tempDir}/reporting/</value>
